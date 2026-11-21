@@ -12,6 +12,15 @@ public class Goal : MonoBehaviour
     bool levelFinished = false;
     float timer = 0f;
     bool showingCredits = false;
+    private static int previousScore = 0;
+
+    private void Awake()
+    {
+        if (SceneManager.GetActiveScene().name == "Nivel 1")
+        {
+            previousScore = 0;
+        }
+    }
 
     private void Update()
     {
@@ -77,6 +86,7 @@ public class Goal : MonoBehaviour
 Debug.Log($"[ESCENA ACTUAL DETECTADA]: '{currentSceneName}'");
         if (currentSceneName == "Nivel 1")
         {
+            previousScore = score.Instance != null ? score.Instance.getpoints() : 0;
             SceneManager.LoadScene("Nivel 2");
         }
         else
@@ -90,10 +100,23 @@ Debug.Log($"[ESCENA ACTUAL DETECTADA]: '{currentSceneName}'");
 
         showingCredits = true;
     
+        int totalScore = previousScore + (score.Instance != null ? score.Instance.getpoints() : 0);
+
         // Actualizar el texto en pantalla
         if (victoryText != null)
         {
-            victoryText.text = $"Gracias por jugar\n Creado por: Juan Perabá";
+            RectTransform rect = victoryText.rectTransform;
+            rect.localScale = Vector3.one;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = new Vector2(24f, 24f);
+            rect.offsetMax = new Vector2(-24f, -24f);
+            victoryText.textWrappingMode = TextWrappingModes.NoWrap;
+            victoryText.enableAutoSizing = true;
+            victoryText.fontSizeMin = 10f;
+            victoryText.fontSizeMax = 120f;
+            victoryText.alignment = TextAlignmentOptions.Center;
+            victoryText.text = $"Gracias por jugar\nCreado por: Juan Perabá\nPuntuación total: {totalScore}";
         }
 
         // Activar el panel

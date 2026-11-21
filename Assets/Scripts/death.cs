@@ -46,16 +46,6 @@ public class death : MonoBehaviour
         died = true;
         Debug.Log("Impacto detectado. Pausando el juego...");
 
-        // Apagar movimiento y salto.
-        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
-        foreach (MonoBehaviour script in scripts)
-        {
-            if (script != this)
-            {
-                script.enabled = false;
-            }
-        }
-
         // Congela el tiempo de la escena
         Time.timeScale = 0f;
     }
